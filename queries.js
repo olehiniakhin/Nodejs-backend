@@ -6,3 +6,19 @@ const pool = new Pool({
     password: 'yuta0408',
     port: 5432,
 })
+
+
+const getUsers = (request, response) => {
+  console.log('getting users');
+
+  pool.query('select * from syain ', (error, results) => {
+      if (error) {
+          throw error
+      }
+      response.status(200).json(results.rows)
+  })
+}
+
+module.exports = {
+  getUsers,
+}
