@@ -68,10 +68,29 @@ const deleteUser = (request, response) => {
   })
 }
 
+// login functions
+// 1 - 初期設定 (for managers)
+// 2 - 随時設定 (for authorized peoples by managers)
+// 3 - ワーカー (for authorized peoples by Store peoples)
+const login = (req, res) => {
+  const {user_id, password} = req.body;
+  pool.query('select * FROM login WHERE user_id = $1 AND password = $2', [user_id,password], (error, results) => {
+    if (error) {
+      throw error
+    }
+    if(results.rows[0]){
+        res.status(200).json({user:results.rows[0]});
+    }else{
+        res.status(400).json({message:"user not fount!"});
+    }
+  })
+}
+
 module.exports = {
   getUsers,
   getUserById,
   createUser,
   updateUser,
   deleteUser,
+  login,
 }
