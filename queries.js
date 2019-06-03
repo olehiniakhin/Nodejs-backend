@@ -19,6 +19,18 @@ const getUsers = (request, response) => {
   })
 }
 
+const getUserById = (request, response) => {
+  const id = parseInt(request.params.id)
+
+  pool.query('select * from sayin where id = $1', [id], (error, results) => {
+      if (error) {
+          throw error
+      }
+      response.status(200).json(results.rows)
+  })
+}
+
 module.exports = {
   getUsers,
+  getUserById,
 }
